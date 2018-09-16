@@ -8,11 +8,12 @@ import com.daasuu.epf.chooser.EConfigChooser;
 import com.daasuu.epf.contextfactory.EContextFactory;
 import com.daasuu.epf.filter.GlFilter;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.video.VideoListener;
 
 /**
  * Created by sudamasayuki on 2017/05/16.
  */
-public class EPlayerView extends GLSurfaceView implements SimpleExoPlayer.VideoListener {
+public class EPlayerView extends GLSurfaceView implements VideoListener {
 
     private final static String TAG = EPlayerView.class.getSimpleName();
 
@@ -52,6 +53,10 @@ public class EPlayerView extends GLSurfaceView implements SimpleExoPlayer.VideoL
         renderer.setGlFilter(glFilter);
     }
 
+    public void setPlayerScaleType(PlayerScaleType playerScaleType) {
+        this.playerScaleType = playerScaleType;
+        requestLayout();
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -76,6 +81,12 @@ public class EPlayerView extends GLSurfaceView implements SimpleExoPlayer.VideoL
 
         setMeasuredDimension(viewWidth, viewHeight);
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        renderer.release();
     }
 
     //////////////////////////////////////////////////////////////////////////
